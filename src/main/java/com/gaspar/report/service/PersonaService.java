@@ -1,19 +1,28 @@
 package com.gaspar.report.service;
 
-
+import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.*;
 import org.springframework.stereotype.Service;
 
+import javax.sql.DataSource;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Service
-public class ReportService {
+public class PersonaService {
+    private final DataSource dataSource;
+
+
+    public PersonaService(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public byte[] generarReporte(
             String nombreReporte
-    ) throws JRException {
+    ) throws JRException, SQLException {
 //        InputStream reportStream  = this.getClass().getResourceAsStream("/reports/"+nombreReporte+".jasper");
         InputStream reportStream = Thread.currentThread()
                 .getContextClassLoader()
@@ -29,7 +38,7 @@ public class ReportService {
         JasperPrint jasperPrint = JasperFillManager.fillReport(
                 reportStream,
                 params,
-                new JREmptyDataSource()
+                dataSource.getConnection()
         );
         System.out.println("servicio3");
         return JasperExportManager.exportReportToPdf(jasperPrint);
