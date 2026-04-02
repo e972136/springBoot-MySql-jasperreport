@@ -4,6 +4,9 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 
+	<parameter name="cia" class="java.lang.String">
+	</parameter>
+
 	<field name="id" class="java.lang.Integer">
 	</field>
 	<field name="nombre" class="java.lang.String">
@@ -17,13 +20,14 @@
 	</background>
 	<title>
 		<band height="40" splitType="Stretch">
-			<staticText>
-				<reportElement x="200" y="10" width="114" height="20" uuid="ee5ee5df-e6a2-4288-bffa-511ce5d692d3"/>
+			<textField>
+				<reportElement x="200" y="10" width="150" height="20" uuid="ee5ee5df-e6a2-4288-bffa-511ce5d692d3"/>
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
-				<text><![CDATA[Lista de Personas]]></text>
-			</staticText>
+<!--				<text><![CDATA[Lista de Personas]]></text>-->
+				<textFieldExpression><![CDATA["E:"+$P{cia}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>

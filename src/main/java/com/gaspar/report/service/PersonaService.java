@@ -58,7 +58,7 @@ public class PersonaService {
         File file = ResourceUtils.getFile("classpath:reports/persona.jrxml");
         JasperReport jr = JasperCompileManager.compileReport(file.getAbsolutePath());
         Map<String, Object> p = new HashMap<>();
-        p.put("x","x");
+        p.put("cia","Gashpar CIO");
         JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(all);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jr, p, ds);
 //        JasperExportManager.exportReportToPdfFile(jasperPrint, reportPath + "factura.pdf");
