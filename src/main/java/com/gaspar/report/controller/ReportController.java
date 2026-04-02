@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class ReportController {
         return ResponseEntity.ok(new Listado(List.of("1","2","3")));
     }
 
+//    http://localhost:8080/api/report
     @GetMapping("/report")
     public ResponseEntity<byte[]> generarReporte(){
         log.info("hola");
@@ -47,6 +49,7 @@ public class ReportController {
         }
     }
 
+//    http://localhost:8080/api/persona
     @GetMapping("/persona")
     public ResponseEntity<byte[]> generarReportePersona(){
         log.info("Persona");
@@ -63,6 +66,24 @@ public class ReportController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+//    http://localhost:8080/api/persona-lista
+    @GetMapping("/persona-lista")
+    public ResponseEntity<byte[]> generarReportePersonaLista() throws FileNotFoundException {
+        log.info("Persona-lista");
+        try {
+            byte[] report = personaService.generarReporteListado("persona");
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.add("Content-Disposition","inline; filename=persona.pdf");
+
+            return new ResponseEntity<>(report,headers,HttpStatus.OK);
+        } catch (JRException e) {
+            System.out.println("e:"+e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }
